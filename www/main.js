@@ -13,7 +13,7 @@ $(document).ready(function () {
     });
 
     // Siriwave configuration
-    var javiahs_speaking = new javiahs_speaking({
+    var javiahs_speaking = new SiriWave({
         container: document.getElementById("siriwave-container"),
         width: 800,
         height: 200,
@@ -23,7 +23,7 @@ $(document).ready(function () {
         autostart: true
       });
 
-    // Javiah's message animation viah siriwave
+    // Javiah's message animation via siriwave
     $('.javiahs-message').textillate({
         loop: true,
         sync: true,
