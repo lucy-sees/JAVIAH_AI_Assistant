@@ -21,7 +21,7 @@ $(document).ready(function () {
         amplitude: "1",
         speed: "0.30",
         autostart: true
-      });
+    });
 
     // Javiah's message animation via siriwave
     $('.javiahs-message').textillate({
@@ -40,7 +40,7 @@ $(document).ready(function () {
 
     // mic button click event
 
-    $("#MicBtn").click(function () { 
+    $("#MicBtn").click(function () {
         eel.playAssistantSound()
         $("#Oval").attr("hidden", true);
         $("#javiahs_speaking").attr("hidden", false);
@@ -93,17 +93,17 @@ $(document).ready(function () {
 
         let message = $("#chatbox").val();
         ShowHideButton(message)
-    
+
     });
-    
+
     // send button event handler
     $("#SendBtn").click(function () {
-    
+
         let message = $("#chatbox").val()
         PlayAssistant(message)
-    
+
     });
-    
+
 
     // enter press event handler on chat box
     $("#chatbox").keypress(function (e) {
@@ -113,4 +113,28 @@ $(document).ready(function () {
             PlayAssistant(message)
         }
     });
+
+    // eel.expose(receiverText);
+    // function receiverText(message) {
+    //     $('#chat-canvas-body').append('<div class="message received">' + message + '</div>');
+    //     // Scroll to bottom of chat canvas
+    //     $('#chat-canvas-body').scrollTop($('#chat-canvas-body')[0].scrollHeight);
+    // }
+
+    // eel.expose(senderText);
+    // function senderText(message) {
+    //     $('#chat-canvas-body').append('<div class="message sent">' + message + '</div>');
+    //     // Scroll to bottom of chat canvas
+    //     $('#chat-canvas-body').scrollTop($('#chat-canvas-body')[0].scrollHeight);
+    // }
+
+    // // Define a function to display a message
+    // eel.expose(DisplayMessage);
+    // function DisplayMessage(message) {
+    //     // Append the message to the chat canvas body
+    //     $('#chat-canvas-body').append('<div class="message">' + message + '</div>');
+    //     // Scroll to bottom of the chat canvas body
+    //     $('#chat-canvas-body').scrollTop($('#chat-canvas-body')[0].scrollHeight);
+    // }
+
 });
