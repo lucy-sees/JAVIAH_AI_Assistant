@@ -1,4 +1,5 @@
 import re
+import wikipedia
 
 
 def extract_yt_term(command):
@@ -22,3 +23,11 @@ def remove_words(input_string, words_to_remove):
 
     return result_string
 
+# wikipedia helper function
+def extract_wk_term (command):
+    # Define a regular expression pattern to capture the search term
+    pattern = r'what is\s+(.*?)'
+    # Use re.search to find the match in the command
+    match = re.search(pattern, command, re.IGNORECASE)
+    # If a match is found, return the extracted search term; otherwise, return None
+    return match.group(1) if match else None
