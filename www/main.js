@@ -114,27 +114,4 @@ $(document).ready(function () {
         }
     });
 
-    // eel.expose(receiverText);
-    // function receiverText(message) {
-    //     $('#chat-canvas-body').append('<div class="message received">' + message + '</div>');
-    //     // Scroll to bottom of chat canvas
-    //     $('#chat-canvas-body').scrollTop($('#chat-canvas-body')[0].scrollHeight);
-    // }
-
-    // eel.expose(senderText);
-    // function senderText(message) {
-    //     $('#chat-canvas-body').append('<div class="message sent">' + message + '</div>');
-    //     // Scroll to bottom of chat canvas
-    //     $('#chat-canvas-body').scrollTop($('#chat-canvas-body')[0].scrollHeight);
-    // }
-
-    // // Define a function to display a message
-    // eel.expose(DisplayMessage);
-    // function DisplayMessage(message) {
-    //     // Append the message to the chat canvas body
-    //     $('#chat-canvas-body').append('<div class="message">' + message + '</div>');
-    //     // Scroll to bottom of the chat canvas body
-    //     $('#chat-canvas-body').scrollTop($('#chat-canvas-body')[0].scrollHeight);
-    // }
-
 });
