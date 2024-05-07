@@ -1,5 +1,7 @@
 import os
-from pipes import quote
+from shlex import quote
+import webbrowser
+import wikipedia
 import re
 import sqlite3
 import struct
@@ -12,14 +14,15 @@ import pyaudio
 import pyautogui
 from engine.command import speak
 from engine.config import ASSISTANT_NAME
-# Playing assiatnt sound function
+# Playing assistant sound function
 import pywhatkit as kit
 import pvporcupine
 
-from engine.helper import extract_yt_term, remove_words
+from engine.helper import extract_yt_term, remove_words, extract_wk_term
 from hugchat import hugchat
 
 con = sqlite3.connect("javiah.db")
+
 cursor = con.cursor()
 
 @eel.expose
@@ -65,13 +68,29 @@ def openCommand(query):
             speak("some thing went wrong")
 
        
-
+# play youtube video
 def PlayYoutube(query):
     search_term = extract_yt_term(query)
     speak("Playing "+search_term+" on YouTube")
     kit.playonyt(search_term)
 
+# search on edge
+def searchOnEdge(query):
+    search_url = f"https://www.bing.com/search?q={query}"
+    webbrowser.open(search_url)
 
+#wikipedia search
+def searchOnWiki(query):
+    search_term = extract_wk_term(query)
+    speak("Searching "+search_term+" on Wikipedia")
+    results = kit.info(query, lines=2)
+    speak("According to Wikipedia")
+    print(results)
+    speak(results)
+    
+        
+
+# hotword detection
 def hotword():
     porcupine=None
     paud=None
@@ -134,8 +153,6 @@ def findContact(query):
         return 0, 0
     
 def whatsApp(mobile_no, message, flag, name):
-    
-
     if flag == 'message':
         target_tab = 12
         javiah_message = "message send successfully to "+name
