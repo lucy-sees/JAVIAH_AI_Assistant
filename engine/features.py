@@ -18,19 +18,19 @@ from engine.config import ASSISTANT_NAME
 import pywhatkit as kit
 import pvporcupine
 
-from engine.helper import extract_yt_term, remove_words, extract_wk_term
+from engine.helper import extract_yt_term, remove_words, extract_wk_term, extract_edge_term
 from hugchat import hugchat
 
 con = sqlite3.connect("javiah.db")
-
 cursor = con.cursor()
+
 
 @eel.expose
 def playAssistantSound():
     music_dir = "www\\assets\\audio\\start_sound.mp3"
     playsound(music_dir)
 
-    
+
 def openCommand(query):
     query = query.replace(ASSISTANT_NAME, "")
     query = query.replace("open", "")
@@ -49,11 +49,11 @@ def openCommand(query):
                 speak("Opening "+query)
                 os.startfile(results[0][0])
 
-            elif len(results) == 0: 
+            elif len(results) == 0:
                 cursor.execute(
-                'SELECT url FROM web_command WHERE name IN (?)', (app_name,))
+                    'SELECT url FROM web_command WHERE name IN (?)', (app_name,))
                 results = cursor.fetchall()
-                
+
                 if len(results) != 0:
                     speak("Opening "+query)
                     webbrowser.open(results[0][0])
@@ -67,51 +67,43 @@ def openCommand(query):
         except:
             speak("some thing went wrong")
 
-       
+
 # play youtube video
 def PlayYoutube(query):
-    search_term = extract_yt_term(query)
-    speak("Playing "+search_term+" on YouTube")
-    kit.playonyt(search_term)
+    try:
+        search_term = extract_yt_term(query)
+        if search_term:
+           speak("Playing "+search_term+" on YouTube")
+           kit.playonyt(search_term)
+        else:
+           speak("I'm sorry, I couldn't understand the song name.")
+    except Exception as e:
+        speak("some thing went wrong", e)
 
-# search on edge
-def searchOnEdge(query):
-    search_url = f"https://www.bing.com/search?q={query}"
-    webbrowser.open(search_url)
-
-#wikipedia search
-def searchOnWiki(query):
-    search_term = extract_wk_term(query)
-    speak("Searching "+search_term+" on Wikipedia")
-    results = kit.info(query, lines=2)
-    speak("According to Wikipedia")
-    print(results)
-    speak(results)
-    
-        
 
 # hotword detection
 def hotword():
-    porcupine=None
-    paud=None
-    audio_stream=None
+    porcupine = None
+    paud = None
+    audio_stream = None
     try:
-       
-        # pre trained keywords    
-        porcupine=pvporcupine.create(keywords=["javiah","alexa"]) 
-        paud=pyaudio.PyAudio()
-        audio_stream=paud.open(rate=porcupine.sample_rate,channels=1,format=pyaudio.paInt16,input=True,frames_per_buffer=porcupine.frame_length)
-        
+
+        # pre trained keywords
+        porcupine = pvporcupine.create(keywords=["javiah", "alexa"])
+        paud = pyaudio.PyAudio()
+        audio_stream = paud.open(rate=porcupine.sample_rate, channels=1,
+                                 format=pyaudio.paInt16, input=True, frames_per_buffer=porcupine.frame_length)
+
         # loop for streaming
         while True:
-            keyword=audio_stream.read(porcupine.frame_length)
-            keyword=struct.unpack_from("h"*porcupine.frame_length,keyword)
+            keyword = audio_stream.read(porcupine.frame_length)
+            keyword = struct.unpack_from("h"*porcupine.frame_length, keyword)
 
-            # processing keyword comes from mic 
-            keyword_index=porcupine.process(keyword)
+            # processing keyword comes from mic
+            keyword_index = porcupine.process(keyword)
 
             # checking first keyword detetcted for not
-            if keyword_index>=0:
+            if keyword_index >= 0:
                 print("hotword detected")
 
                 # pressing shorcut key win+j
@@ -120,7 +112,7 @@ def hotword():
                 autogui.press("j")
                 time.sleep(2)
                 autogui.keyUp("win")
-                
+
     except:
         if porcupine is not None:
             porcupine.delete()
@@ -130,16 +122,17 @@ def hotword():
             paud.terminate()
 
 
-
 # find contacts
 def findContact(query):
-    
-    words_to_remove = [ASSISTANT_NAME, 'make', 'a', 'to', 'phone', 'call', 'send', 'message', 'whatsapp', 'video']
+
+    words_to_remove = [ASSISTANT_NAME, 'make', 'a', 'to',
+                       'phone', 'call', 'send', 'message', 'whatsapp', 'video']
     query = remove_words(query, words_to_remove)
 
     try:
         query = query.strip().lower()
-        cursor.execute("SELECT mobile_no FROM contacts WHERE LOWER(name) LIKE ? OR LOWER(name) LIKE ?", ('%' + query + '%', query + '%'))
+        cursor.execute("SELECT mobile_no FROM contacts WHERE LOWER(name) LIKE ? OR LOWER(name) LIKE ?",
+                       ('%' + query + '%', query + '%'))
         results = cursor.fetchall()
         print(results[0][0])
         mobile_number_str = str(results[0][0])
@@ -151,7 +144,8 @@ def findContact(query):
     except:
         speak('not exist in contacts')
         return 0, 0
-    
+
+
 def whatsApp(mobile_no, message, flag, name):
     if flag == 'message':
         target_tab = 12
@@ -167,7 +161,6 @@ def whatsApp(mobile_no, message, flag, name):
         message = ''
         javiah_message = "staring video call with "+name
 
-
     # Encode the message for URL
     encoded_message = quote(message)
     print(encoded_message)
@@ -181,7 +174,7 @@ def whatsApp(mobile_no, message, flag, name):
     subprocess.run(full_command, shell=True)
     time.sleep(5)
     subprocess.run(full_command, shell=True)
-    
+
     pyautogui.hotkey('ctrl', 'f')
 
     for i in range(1, target_tab):
@@ -190,13 +183,15 @@ def whatsApp(mobile_no, message, flag, name):
     pyautogui.hotkey('enter')
     speak(javiah_message)
 
-# chat bot 
+# chat bot
+
+
 def chatBot(query):
     user_input = query.lower()
     chatbot = hugchat.ChatBot(cookie_path=r"engine\cookies.json")
     id = chatbot.new_conversation()
     chatbot.change_conversation(id)
-    response =  chatbot.chat(user_input)
+    response = chatbot.chat(user_input)
     print(response)
     speak(response)
     return response
