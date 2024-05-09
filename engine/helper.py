@@ -31,3 +31,12 @@ def extract_wk_term (command):
     match = re.search(pattern, command, re.IGNORECASE)
     # If a match is found, return the extracted search term; otherwise, return None
     return match.group(1) if match else None
+
+# msedge helper function
+def extract_edge_term (command):
+    # Define a regular expression pattern to capture the search term
+    pattern = r'search\s+(.*?)\s+on\s+edge'
+    # Use re.search to find the match in the command
+    match = re.search(pattern, command, re.IGNORECASE)
+    # If a match is found, return the extracted search term; otherwise, return None
+    return match.group(1) if match else None
