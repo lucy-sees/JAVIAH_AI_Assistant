@@ -357,5 +357,4 @@ def allCommands(message=1, start_of_conversation=True):
             print("Say that again please...")
             speak("Say that again please...")
             continue
-
-eel.ShowHood()
+        eel.ShowHood()
