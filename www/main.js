@@ -13,7 +13,7 @@ $(document).ready(function () {
     });
 
     // Siriwave configuration
-    var javiahs_speaking = new javiahs_speaking({
+    var javiahs_speaking = new SiriWave({
         container: document.getElementById("siriwave-container"),
         width: 800,
         height: 200,
@@ -21,9 +21,9 @@ $(document).ready(function () {
         amplitude: "1",
         speed: "0.30",
         autostart: true
-      });
+    });
 
-    // Javiah's message animation viah siriwave
+    // Javiah's message animation via siriwave
     $('.javiahs-message').textillate({
         loop: true,
         sync: true,
@@ -40,7 +40,7 @@ $(document).ready(function () {
 
     // mic button click event
 
-    $("#MicBtn").click(function () { 
+    $("#MicBtn").click(function () {
         eel.playAssistantSound()
         $("#Oval").attr("hidden", true);
         $("#javiahs_speaking").attr("hidden", false);
@@ -93,17 +93,17 @@ $(document).ready(function () {
 
         let message = $("#chatbox").val();
         ShowHideButton(message)
-    
+
     });
-    
+
     // send button event handler
     $("#SendBtn").click(function () {
-    
+
         let message = $("#chatbox").val()
         PlayAssistant(message)
-    
+
     });
-    
+
 
     // enter press event handler on chat box
     $("#chatbox").keypress(function (e) {
@@ -113,4 +113,5 @@ $(document).ready(function () {
             PlayAssistant(message)
         }
     });
+
 });
