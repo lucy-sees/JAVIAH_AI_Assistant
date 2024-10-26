@@ -34,8 +34,8 @@ con.commit()
 
 
 # testing module
-app_name = "android studio"
-app_path = "c:\\Program Files\\Android\\Android Studio\\bin\\studio64.exe"
+app_name = "visual studio code"
+app_path = "C:\\Users\\BEST\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
 cursor.execute('INSERT INTO sys_command (name, path) VALUES (?, ?)', (app_name, app_path))
 con.commit()
 

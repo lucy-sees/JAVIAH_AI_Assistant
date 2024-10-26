@@ -93,7 +93,7 @@ def allCommands(message=1, start_of_conversation=True):
                 from engine.features import openCommand
                 openCommand(query)
                 speak("Opened" + query)
-            #youtube    
+            # youtube
             elif "on youtube" in query:
                 from engine.features import PlayYoutube
                 PlayYoutube(query)
@@ -115,9 +115,11 @@ def allCommands(message=1, start_of_conversation=True):
             # who created you
             elif "who created you" in query:
                 print(
-                    "I don't know who created me, but I was programmed by a tech nerd using Python programming language.")
+                    'I don\'t know who created me, but I was programmed by a tech baddie using Python programming '
+                    'language.')
                 speak(
-                    "I don't know who created me, but I was programmed by a tech nerd using Python programming language.")
+                    'I don\'t know who created me, but I was programmed by a tech baddie using Python programming '
+                    'language.')
 
             # wikipedia
             elif 'wikipedia' in query:
@@ -136,7 +138,7 @@ def allCommands(message=1, start_of_conversation=True):
                 os.system("taskkill /f /im chrome.exe")
                 speak("Chrome has been closed")
 
-            # microsoft edge
+            # Microsoft Edge
             elif "open microsoft edge" in query:
                 os.system("start msedge.exe")
                 speak("Microsoft Edge has been opened")
